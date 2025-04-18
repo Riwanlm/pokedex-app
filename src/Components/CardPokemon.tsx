@@ -3,18 +3,19 @@ import { Pokemon } from "../App";
 import clsx from "clsx";
 import { colorType, PokemonTypes } from "../utils/colorsPokemonType";
 import { TPokemon } from "../utils/types";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { DialogCardPokemon } from "./DialogCardPokemon";
 
 type CardPokemonProps = {
   pokemon: Pokemon;
-  modalRef: React.RefObject<HTMLDialogElement | null>;
 };
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export const CardPokemon = ({ pokemon, modalRef }: CardPokemonProps) => {
+export const CardPokemon = ({ pokemon }: CardPokemonProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const { data, error, isLoading } = useSWR<TPokemon>(pokemon.url, fetcher);
+  const modalRef = useRef<HTMLDialogElement>(null);
 
   if (error) return <div>échec du chargement</div>;
   if (isLoading) return <div>chargement...</div>;
@@ -23,12 +24,13 @@ export const CardPokemon = ({ pokemon, modalRef }: CardPokemonProps) => {
   const borderColor = colorType[type];
 
   const openModal = () => {
+    console.log(data);
     if (modalRef.current) {
       modalRef.current.showModal();
     }
   };
 
-  console.log(data);
+  // console.log(data);
 
   return data ? (
     <>
@@ -51,11 +53,16 @@ export const CardPokemon = ({ pokemon, modalRef }: CardPokemonProps) => {
         <p className="card-title">#{data.id}</p>
         <img
           src={data.sprites.other["dream_world"].front_default}
-          alt="Shoes"
+          alt="image of the pokemon"
           className="w-1/2 h-auto object-cover"
         />
         <h2 className="card-title">{data.name}</h2>
       </div>
+      <DialogCardPokemon
+        modalRef={modalRef}
+        data={data}
+        borderColor={borderColor}
+      />
     </>
   ) : null;
 };
