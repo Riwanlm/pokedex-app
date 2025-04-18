@@ -52,7 +52,11 @@ export const CardPokemon = ({ pokemon }: CardPokemonProps) => {
       >
         <p className="card-title">#{data.id}</p>
         <img
-          src={data.sprites.other["dream_world"].front_default}
+          src={
+            data.sprites.other["dream_world"].front_default
+              ? data.sprites.other["dream_world"].front_default
+              : data.sprites.other["official-artwork"].front_default
+          }
           alt="image of the pokemon"
           className="w-1/2 h-auto object-cover"
         />
