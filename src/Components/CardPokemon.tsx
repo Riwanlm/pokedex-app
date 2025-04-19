@@ -1,6 +1,5 @@
 import useSWR from "swr";
 import { Pokemon } from "../App";
-import clsx from "clsx";
 import { colorType, PokemonTypes } from "../utils/colorsPokemonType";
 import { TPokemon } from "../utils/types";
 import { useRef, useState } from "react";
@@ -18,7 +17,14 @@ export const CardPokemon = ({ pokemon }: CardPokemonProps) => {
   const modalRef = useRef<HTMLDialogElement>(null);
 
   if (error) return <div>échec du chargement</div>;
-  if (isLoading) return <div>chargement...</div>;
+  if (isLoading)
+    return (
+      <div className="flex w-52 flex-col gap-4 border-1 border-gray-500 p-3 rounded-md">
+        <div className="skeleton h-4 w-20 mx-auto"></div>
+        <div className="skeleton h-32 w-full"></div>
+        <div className="skeleton h-4 w-full"></div>
+      </div>
+    );
 
   const type: PokemonTypes = data ? data.types[0].type.name : "unknown";
   const borderColor = colorType[type];
@@ -35,9 +41,9 @@ export const CardPokemon = ({ pokemon }: CardPokemonProps) => {
   return data ? (
     <>
       <div
-        className={clsx(
-          "flex flex-col items-center justify-between card bg-base-100 p-5 gap-1 w-full max-h cursor-pointer"
-        )}
+        className={
+          "flex flex-col items-center justify-between card bg-base-100 p-2 gap-2 w-full max-h cursor-pointer"
+        }
         style={{
           borderColor: `${borderColor}`,
           boxShadow: isHovered
@@ -58,9 +64,9 @@ export const CardPokemon = ({ pokemon }: CardPokemonProps) => {
               : data.sprites.other["official-artwork"].front_default
           }
           alt="image of the pokemon"
-          className="w-1/2 h-auto object-cover"
+          className="w-1/2 h-auto max-h-35 object-contain"
         />
-        <h2 className="card-title">{data.name}</h2>
+        <h2 className="card-title">{data.name.toUpperCase()}</h2>
       </div>
       <DialogCardPokemon
         modalRef={modalRef}

@@ -20,7 +20,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function App() {
   const [page, setPage] = useState(0);
-  const limit = 18;
+  const limit = 12;
   const offset = page * limit;
   const { data, error, isLoading } = useSWR<TPokemons>(
     `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`,
@@ -29,7 +29,12 @@ function App() {
 
   // console.log(data);
 
-  if (isLoading) return <p>Chargement...</p>;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center w-full h-screen">
+        <span className="loading loading-ring loading-xl text-accent"></span>
+      </div>
+    );
   if (error) return <p>Erreur : {error.message}</p>;
 
   const totalPages = data ? Math.ceil(data.count / limit) : 0;

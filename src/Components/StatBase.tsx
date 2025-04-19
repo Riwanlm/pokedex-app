@@ -9,7 +9,7 @@ type Statebase = {
 
 export const StatBase = ({ data, StatName, numTab, numMax }: Statebase) => {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center justify-evenly gap-4">
       <p className="py-1 w-45">
         {StatName} : {data.stats[numTab].base_stat}
       </p>

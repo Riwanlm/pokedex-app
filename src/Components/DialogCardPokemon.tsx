@@ -38,14 +38,14 @@ export const DialogCardPokemon = ({
       onClick={(e) => closeModalClickOutside(e)}
       className="modal"
     >
-      <div className="modal-box w-11/12 max-w-3xl">
+      <div className="modal-box w-11/12 max-w-2xl">
         <img
           src={data.sprites.other["dream_world"].front_default}
           alt="image of the pokemon"
-          className="w-1/3 h-auto object-cover mx-auto relative top-20"
+          className="w-2/4 h-auto object-cover mx-auto relative top-20"
         />
         <div
-          className="bg-neutral-content rounded-2xl p-4 text-neutral shadow-xl shadow-green-400/60"
+          className="bg-neutral-content rounded-2xl p-4 text-neutral shadow-xl shadow-green-400/6 mx-auto"
           style={{
             boxShadow: `0px 5px 15px 10px ${borderColor}`,
           }}
