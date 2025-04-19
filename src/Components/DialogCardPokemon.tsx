@@ -42,7 +42,7 @@ export const DialogCardPokemon = ({
         <img
           src={data.sprites.other["dream_world"].front_default}
           alt="image of the pokemon"
-          className="w-2/4 h-auto object-cover mx-auto relative top-20"
+          className="w-1/3 h-auto max-h-60 object-contain mx-auto relative top-20"
         />
         <div
           className="bg-neutral-content rounded-2xl p-4 text-neutral shadow-xl shadow-green-400/6 mx-auto"
