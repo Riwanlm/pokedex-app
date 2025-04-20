@@ -15,7 +15,7 @@ export type TPokemon = {
   species: any;
   sprites: Sprites;
   stats: Stat[];
-  types: any[];
+  types: Type[];
   weight: number;
 };
 
@@ -31,6 +31,11 @@ export type Sprites = {
   other: any;
   versions: any;
 };
+
+export interface Type {
+  slot: number;
+  type: Type2;
+}
 
 export type Type2 = {
   name: string;

@@ -1,6 +1,7 @@
 import { Ruler, Weight } from "lucide-react";
 import { TPokemon } from "../utils/types";
 import { StatBase } from "./StatBase";
+import { colorType, PokemonTypes } from "../utils/colorsPokemonType";
 
 type DialogCardPokemon = {
   modalRef: React.RefObject<HTMLDialogElement | null>;
@@ -39,8 +40,18 @@ export const DialogCardPokemon = ({
       className="modal"
     >
       <div className="modal-box w-11/12 max-w-2xl">
+        <div className="flex justify-center text-3xl relative top-5">
+          #{data.id}
+        </div>
+        <h3 className="flex justify-center relative top-10 font-bold text-3xl text-center text-white">
+          {data.name.toUpperCase()}
+        </h3>
         <img
-          src={data.sprites.other["dream_world"].front_default}
+          src={
+            data.sprites.other["dream_world"].front_default
+              ? data.sprites.other["dream_world"].front_default
+              : data.sprites.other["official-artwork"].front_default
+          }
           alt="image of the pokemon"
           className="w-1/3 h-auto max-h-60 object-contain mx-auto relative top-20"
         />
@@ -51,9 +62,20 @@ export const DialogCardPokemon = ({
           }}
         >
           <div className="h-20"></div>
-          <h3 className="font-bold text-3xl text-center">
-            {data.name.toUpperCase()}
-          </h3>
+          <div className="flex justify-center gap-4">
+            {data.types.map(({ type: { name } }) => (
+              <div
+                key={name}
+                className="badge badge-xl"
+                style={{
+                  background: colorType[name as PokemonTypes],
+                  border: `3px solid ${colorType[name as PokemonTypes]}`,
+                }}
+              >
+                {name}
+              </div>
+            ))}
+          </div>
           <div className="flex justify-evenly py-4">
             <div>
               <Ruler size={40} className="mx-auto" />

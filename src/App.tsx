@@ -1,8 +1,9 @@
 import "./App.css";
 import useSWR from "swr";
 import { CardPokemon } from "./Components/CardPokemon";
-import { CircleArrowLeft, CircleArrowRight, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState } from "react";
+import { Pagination } from "./Components/Pagination";
 
 export type Pokemon = {
   name: string;
@@ -70,25 +71,7 @@ function App() {
             <CardPokemon key={pokemon.name} pokemon={pokemon} />
           ))}
       </div>
-      <div className="join w-full justify-center gap-5">
-        <button
-          className="join-item btn btn-outline btn-accent"
-          onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
-          disabled={page === 0}
-        >
-          <CircleArrowLeft size={20} />
-        </button>
-        <button className="join-item btn border-accent cursor-auto rounded">
-          Page {page}
-        </button>
-        <button
-          className="join-item btn btn-outline btn-accent"
-          onClick={() => setPage((prev) => prev + 1)}
-          disabled={page + 1 >= totalPages}
-        >
-          <CircleArrowRight size={20} />
-        </button>
-      </div>
+      <Pagination setPage={setPage} page={page} totalPages={totalPages} />
     </div>
   );
 }

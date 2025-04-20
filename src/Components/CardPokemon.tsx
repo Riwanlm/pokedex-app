@@ -26,7 +26,8 @@ export const CardPokemon = ({ pokemon }: CardPokemonProps) => {
       </div>
     );
 
-  const type: PokemonTypes = data ? data.types[0].type.name : "unknown";
+  const type: PokemonTypes =
+    (data?.types[0].type.name as PokemonTypes) ?? "unknown";
   const borderColor = colorType[type];
 
   const openModal = () => {
