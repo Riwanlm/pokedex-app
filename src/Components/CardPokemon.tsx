@@ -26,12 +26,13 @@ export const CardPokemon = ({ pokemon }: CardPokemonProps) => {
       </div>
     );
 
+  // console.log(data);
+
   const type: PokemonTypes =
     (data?.types[0].type.name as PokemonTypes) ?? "unknown";
   const borderColor = colorType[type];
 
   const openModal = () => {
-    console.log(data);
     if (modalRef.current) {
       modalRef.current.showModal();
     }

@@ -4,6 +4,7 @@ import { CardPokemon } from "./Components/CardPokemon";
 import { useState } from "react";
 import { Pagination } from "./Components/Pagination";
 import { SearchPokemon } from "./Components/SearchPokemon";
+import { PokemonTypes } from "./utils/colorsPokemonType";
 
 export type Pokemon = {
   name: string;
@@ -17,13 +18,64 @@ type TPokemons = {
   results: Pokemon[];
 };
 
+type TSearchPokemonType = {
+  damage_relations: any;
+  game_indices: any;
+  generation: any;
+  id: number;
+  move_damage_class: any;
+  moves: any;
+  name: string;
+  names: any;
+  past_damage_relations: any;
+  pokemon: TResultTypePokemon[];
+  sprites: any;
+};
+
+type TResultTypePokemon = {
+  pokemon: Pokemon;
+  slot: number;
+};
+
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function App() {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState<string | null>(null);
+  const [searchType, setSearchType] = useState<string | null>(null);
+
   const limit = 12;
   const offset = page * limit;
+  const arrayOfTypes: PokemonTypes[] = [
+    "fighting",
+    "normal",
+    "ground",
+    "poison",
+    "flying",
+    "bug",
+    "ghost",
+    "rock",
+    "steel",
+    "fire",
+    "water",
+    "grass",
+    "ice",
+    "electric",
+    "fairy",
+    "psychic",
+    "dragon",
+    "dark",
+    "shadow",
+    "unknown",
+  ];
+
+  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value === "All types") {
+      setSearchType(null);
+      return;
+    }
+    setSearchType(e.target.value);
+  };
 
   const {
     data: paginatedData,
@@ -43,8 +95,19 @@ function App() {
     fetcher
   );
 
-  const isLoading = paginatedLoading || searchLoading;
-  const error = paginatedError || searchError;
+  const {
+    data: searchedTypePokemon,
+    error: typeError,
+    isLoading: typeIsLoadin,
+  } = useSWR<TSearchPokemonType>(
+    searchType
+      ? `https://pokeapi.co/api/v2/type/${searchType.toLocaleLowerCase()}`
+      : null,
+    fetcher
+  );
+
+  const isLoading = paginatedLoading || searchLoading || typeIsLoadin;
+  const error = paginatedError || searchError || typeError;
 
   if (isLoading)
     return (
@@ -68,19 +131,6 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-full py-10 gap-10 m-auto max-w-4xl px-4">
-      <h1 className="text-3xl font-bold text-center w-full">Pokédex</h1>
-      <div className="flex w-full justify-between">
-        <SearchPokemon setSearch={setSearch} />
-        <select defaultValue="Pick a Runtime" className="select select-accent">
-          <option disabled={true} defaultChecked={true}>
-            Trier par type …
-          </option>
-          <option>npm</option>
-          <option>Bun</option>
-          <option>yarn</option>
-        </select>
-      </div>
-
       {isLoading ? (
         <div className="flex items-center justify-center w-full h-32">
           <span className="loading loading-ring loading-xl text-accent"></span>
@@ -88,6 +138,22 @@ function App() {
       ) : null}
       {error ? <p className="text-red-500">Erreur lors du chargement</p> : null}
 
+      <h1 className="text-3xl font-bold text-center w-full">Pokédex</h1>
+      <div className="flex w-full justify-between">
+        <SearchPokemon setSearch={setSearch} />
+        <select
+          onChange={(e) => handleSelect(e)}
+          defaultValue={searchType ? searchType : 1}
+          className="select select-accent"
+        >
+          <option>All types</option>
+          {arrayOfTypes.map((type) => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="grid w-full grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {search && searchedPokemon && (
           <CardPokemon
@@ -97,13 +163,23 @@ function App() {
             }}
           />
         )}
-        {!search
+
+        {searchType
+          ? searchedTypePokemon?.pokemon.map((pokemon) => (
+              <CardPokemon
+                key={pokemon.pokemon.name}
+                pokemon={pokemon.pokemon}
+              />
+            ))
+          : null}
+
+        {!search && !searchType
           ? paginatedData?.results.map((pokemon) => (
               <CardPokemon key={pokemon.name} pokemon={pokemon} />
             ))
           : null}
       </div>
-      {!search ? (
+      {!search && !searchType ? (
         <Pagination setPage={setPage} page={page} totalPages={totalPages} />
       ) : null}
       {search ? (
