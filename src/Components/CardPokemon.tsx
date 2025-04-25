@@ -26,13 +26,12 @@ export const CardPokemon = ({ pokemon }: CardPokemonProps) => {
       </div>
     );
 
-  // console.log(data);
-
   const type: PokemonTypes =
     (data?.types[0].type.name as PokemonTypes) ?? "unknown";
   const borderColor = colorType[type];
 
   const openModal = () => {
+    // console.log(data);
     if (modalRef.current) {
       modalRef.current.showModal();
     }
@@ -64,6 +63,8 @@ export const CardPokemon = ({ pokemon }: CardPokemonProps) => {
             data.sprites.other["dream_world"].front_default
               ? data.sprites.other["dream_world"].front_default
               : data.sprites.other["official-artwork"].front_default
+              ? data.sprites.other["official-artwork"].front_default
+              : "https://cdn-icons-png.flaticon.com/512/11542/11542598.png"
           }
           alt="image of the pokemon"
           className="w-1/2 h-auto max-h-35 object-contain"

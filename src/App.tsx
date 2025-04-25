@@ -1,10 +1,11 @@
 import "./App.css";
 import useSWR from "swr";
 import { CardPokemon } from "./Components/CardPokemon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pagination } from "./Components/Pagination";
 import { SearchPokemon } from "./Components/SearchPokemon";
 import { PokemonTypes } from "./utils/colorsPokemonType";
+import { Info } from "lucide-react";
 
 export type Pokemon = {
   name: string;
@@ -43,6 +44,7 @@ function App() {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState<string | null>(null);
   const [searchType, setSearchType] = useState<string | null>(null);
+  const [test, setTest] = useState(false);
 
   const limit = 12;
   const offset = page * limit;
@@ -106,6 +108,14 @@ function App() {
     fetcher
   );
 
+  useEffect(() => {
+    if (searchedTypePokemon && searchedTypePokemon.pokemon.length === 0) {
+      setTest(true);
+    } else {
+      setTest(false);
+    }
+  }, [searchedTypePokemon]);
+
   const isLoading = paginatedLoading || searchLoading || typeIsLoadin;
   const error = paginatedError || searchError || typeError;
 
@@ -154,6 +164,12 @@ function App() {
           ))}
         </select>
       </div>
+      {test && (
+        <div role="alert" className="alert alert-info">
+          <Info size={20} />
+          <span>Aucun résultat trouvé pour ce type.</span>
+        </div>
+      )}
       <div className="grid w-full grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {search && searchedPokemon && (
           <CardPokemon
@@ -164,7 +180,9 @@ function App() {
           />
         )}
 
-        {searchType
+        {searchType &&
+        searchedTypePokemon &&
+        searchedTypePokemon?.pokemon.length > 0
           ? searchedTypePokemon?.pokemon.map((pokemon) => (
               <CardPokemon
                 key={pokemon.pokemon.name}

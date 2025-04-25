@@ -51,6 +51,8 @@ export const DialogCardPokemon = ({
             data.sprites.other["dream_world"].front_default
               ? data.sprites.other["dream_world"].front_default
               : data.sprites.other["official-artwork"].front_default
+              ? data.sprites.other["official-artwork"].front_default
+              : "https://cdn-icons-png.flaticon.com/512/11542/11542598.png"
           }
           alt="image of the pokemon"
           className="w-1/3 h-auto max-h-60 object-contain mx-auto relative top-20"
