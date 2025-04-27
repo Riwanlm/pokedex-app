@@ -23,7 +23,7 @@ export const SearchPokemon = ({ setSearch }: TSearchPokemon) => {
         className="join-item btn btn-outline btn-accent"
         onClick={() => setSearch(value.trim())}
       >
-        <Search size={16} />
+        <Search size={18} />
       </button>
     </div>
   );
