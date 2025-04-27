@@ -68,12 +68,18 @@ export const DialogCardPokemon = ({
             {data.types.map(({ type: { name } }) => (
               <div
                 key={name}
-                className="badge badge-xl"
+                className="badge badge-xl p-4"
                 style={{
                   background: colorType[name as PokemonTypes],
                   border: `3px solid ${colorType[name as PokemonTypes]}`,
+                  borderRadius: 100,
                 }}
               >
+                <img
+                  src={`../../src/assets/${name}.svg`}
+                  width={20}
+                  height={20}
+                />
                 {name}
               </div>
             ))}

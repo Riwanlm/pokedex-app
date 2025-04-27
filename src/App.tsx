@@ -4,8 +4,8 @@ import { CardPokemon } from "./Components/CardPokemon";
 import { useEffect, useState } from "react";
 import { Pagination } from "./Components/Pagination";
 import { SearchPokemon } from "./Components/SearchPokemon";
-import { PokemonTypes } from "./utils/colorsPokemonType";
 import { Info } from "lucide-react";
+import { SelectTypesPokemons } from "./Components/SelectTypesPokemons";
 
 export type Pokemon = {
   name: string;
@@ -48,37 +48,6 @@ function App() {
 
   const limit = 12;
   const offset = page * limit;
-  const arrayOfTypes: PokemonTypes[] = [
-    "fighting",
-    "normal",
-    "ground",
-    "poison",
-    "flying",
-    "bug",
-    "ghost",
-    "rock",
-    "steel",
-    "fire",
-    "water",
-    "grass",
-    "ice",
-    "electric",
-    "fairy",
-    "psychic",
-    "dragon",
-    "dark",
-    "shadow",
-    "unknown",
-  ];
-
-  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearch(null);
-    if (e.target.value === "All types") {
-      setSearchType(null);
-      return;
-    }
-    setSearchType(e.target.value);
-  };
 
   const {
     data: paginatedData,
@@ -152,18 +121,11 @@ function App() {
       <h1 className="text-3xl font-bold text-center w-full">Pokédex</h1>
       <div className="flex w-full justify-between">
         <SearchPokemon setSearch={setSearch} />
-        <select
-          onChange={(e) => handleSelect(e)}
-          defaultValue={searchType ? searchType : 1}
-          className="select select-accent"
-        >
-          <option>All types</option>
-          {arrayOfTypes.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
+        <SelectTypesPokemons
+          setSearch={setSearch}
+          setSearchType={setSearchType}
+          searchType={searchType}
+        />
       </div>
       {test && (
         <div role="alert" className="alert alert-info">
