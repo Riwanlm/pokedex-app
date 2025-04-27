@@ -72,6 +72,7 @@ function App() {
   ];
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSearch(null);
     if (e.target.value === "All types") {
       setSearchType(null);
       return;
